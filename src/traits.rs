@@ -1,5 +1,22 @@
 //! Blueprint traits
 
+/// Use when Left side is not used
+pub struct NoLeft;
+impl Left for NoLeft {
+    /// boiler
+    fn left_lens(&self) -> (usize, usize) {
+        unreachable!()
+    }
+    /// boiler
+    fn left_set_lens(&mut self, _: usize, _: usize) -> () {
+        unreachable!()
+    }
+    /// boiler
+    fn left_bufs_mut(&mut self) -> (&mut [u8], &mut [u8]) {
+        unreachable!()
+    }
+}
+
 /// Left side of state machine I/O
 pub trait Left {
     /// Lengths of Input and Output of Left side
@@ -14,19 +31,33 @@ pub trait Left {
 pub struct NoRight;
 impl Right for NoRight {
     /// boiler
-    fn out_len(&self) -> usize { unreachable!() }
+    fn out_len(&self) -> usize {
+        unreachable!()
+    }
     /// boiler
-    fn buf_right_out(&self) -> &[u8] { unreachable!() }
+    fn buf_right_out(&self) -> &[u8] {
+        unreachable!()
+    }
     /// boiler
-    fn wants_right_next_in(&self) -> bool { unreachable!() }
+    fn wants_right_next_in(&self) -> bool {
+        unreachable!()
+    }
     /// boiler
-    fn set_wants_right_next_in(&mut self, _: bool) -> () { unreachable!() }
+    fn set_wants_right_next_in(&mut self, _: bool) -> () {
+        unreachable!()
+    }
     /// boiler
-    fn all_sent_right_out(&mut self) -> () { unreachable!() }
+    fn all_sent_right_out(&mut self) -> () {
+        unreachable!()
+    }
     /// boiler
-    fn add_right_out(&mut self, _: &[u8]) -> () { unreachable!() }
+    fn add_right_out(&mut self, _: &[u8]) -> () {
+        unreachable!()
+    }
     /// boiler
-    fn add_right_in(&mut self, _: &[u8]) -> () { unreachable!() }
+    fn add_right_in(&mut self, _: &[u8]) -> () {
+        unreachable!()
+    }
 }
 
 /// Right side of state machine I/O

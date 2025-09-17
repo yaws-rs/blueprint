@@ -1,0 +1,22 @@
+[package]
+name = "blueprint-tls-example"
+version = "0.0.1"
+edition = "2021"
+description = "Static state machine / protocol blueprints tls example"
+homepage = "https://github.com/yaws-rs/blueprint"
+keywords = ["io", "uring", "epoll", "async"]
+license = "Apache-2.0/MIT"
+readme = "README.md"
+repository = "https://github.com/yaws-rs/blueprint"
+categories = ["science"]
+
+[dependencies]
+blueprint = { path = "../", version = "0.0.1", default-features = false }
+blueprint-tls = { path = "../../tls/blueprint", version = "0.0.1", default-features = false, features = ["std", "util"] }
+
+[features]
+default = []
+std = []
+
+[package.metadata.docs.rs]
+features = []

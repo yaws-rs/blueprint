@@ -1,0 +1,25 @@
+[package]
+name = "blueprints-known"
+version = "0.0.1"
+edition = "2021"
+description = "Known machine / protocol blueprints"
+homepage = "https://github.com/yaws-rs/blueprint"
+keywords = ["io", "uring", "epoll", "async"]
+license = "Apache-2.0/MIT"
+readme = "README.md"
+repository = "https://github.com/yaws-rs/blueprint"
+categories = ["science"]
+
+[dependencies]
+blueprint = { path = "../", version = "0.0.1", default-features = false }
+blueprint-tls = { optional = true, path = "../../tls/blueprint", version = "0.0.1", default-features = false }
+blueprint-tick-tock = { optional = true, path = "../../blueprint/tick-tock", default-features = false }
+
+[features]
+default = []
+tls = ["dep:blueprint-tls"]
+tick-tock = ["dep:blueprint-tick-tock"]
+std = ["blueprint-tls?/std"]
+
+[package.metadata.docs.rs]
+features = []
