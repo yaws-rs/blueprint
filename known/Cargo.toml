@@ -14,12 +14,14 @@ categories = ["science"]
 blueprint = { path = "../", version = "0.0.1", default-features = false }
 blueprint-tls = { optional = true, path = "../../tls/blueprint", version = "0.0.1", default-features = false }
 blueprint-tick-tock = { optional = true, path = "../../blueprint/tick-tock", default-features = false }
+blueprint-h11spec = { optional = true, path = "../../h11spec/blueprint", default-features = false }
 
 [features]
 default = []
+h11server = ["dep:blueprint-h11spec", "blueprint-h11spec/h11server"]
 tls = ["dep:blueprint-tls"]
 tick-tock = ["dep:blueprint-tick-tock"]
-std = ["blueprint-tls?/std"]
+std = ["blueprint-tls?/std", "blueprint-h11spec?/std"]
 
 [package.metadata.docs.rs]
 features = []

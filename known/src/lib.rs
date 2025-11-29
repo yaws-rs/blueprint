@@ -14,6 +14,8 @@ pub enum Orbits {
     Tls(blueprint_tls::TlsContext),
     #[cfg(feature = "tick-tock")]
     TickTock(blueprint_tick_tock::TickTocking),
+    #[cfg(feature = "h11server")]
+    H11Server(blueprint_h11spec::H11Serving),
 }
 
 impl core::fmt::Debug for Orbits {
@@ -35,8 +37,12 @@ impl Orbit for Orbits {
     #[inline]
     fn advance_with<B, L: Left, R: Right>(&mut self,b: &mut B,l: &mut L,r: &mut R) -> Result<Self::Position, Self::Error> {
         _ = match self {
+            #[cfg(feature = "tls")]
             Self::Tls(t) => { t.advance_with(b, l, r); },
+            #[cfg(feature = "tick-tock")]
             Self::TickTock(t) => { t.advance_with(b, l, r); },
+            #[cfg(feature = "h11server")]
+            Self::H11Server(t) => { t.advance_with(b, l, r); },
         };
         // TODO: harmonize the error & Position
         Ok(NoPosition)

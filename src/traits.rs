@@ -4,6 +4,12 @@
 pub struct NoLeft;
 impl Left for NoLeft {
     /// boiler
+    fn left_in_blocked(&self) -> bool {
+        unreachable!()
+    }
+    /// boiler
+    fn set_left_in_blocked(&mut self, _: bool) -> () {}
+    /// boiler
     fn left_lens(&self) -> (usize, usize) {
         unreachable!()
     }
@@ -12,26 +18,68 @@ impl Left for NoLeft {
         unreachable!()
     }
     /// boiler
-    fn left_bufs_mut(&mut self) -> (&mut [u8], &mut [u8]) {
+    fn left_bufs_mut<'d>(&'d mut self) -> (InBuffer<'d>, &mut [u8]) {
+        unreachable!()
+    }
+    fn is_ready(&self) -> bool {
+        unreachable!()
+    }
+    fn set_ready(&mut self, _: bool) -> bool {
+        unreachable!()
+    }
+    fn left_want_read(&self) -> bool {
+        unreachable!()
+    }
+    fn set_left_want_read(&mut self, _: bool) -> () {
+        unreachable!()
+    }
+    fn left_want_write(&self) -> bool {
+        unreachable!()
+    }
+    fn set_left_want_write(&mut self, _: bool) -> () {
         unreachable!()
     }
 }
 
+/// Input Buffer
+pub enum InBuffer<'d> {
+    /// Single contiguous buffer
+    Single(&'d mut [u8]),
+    /// Two disjointed contiguous buffers
+    Double(&'d mut [u8], &'d mut [u8]),
+}
+
 /// Left side of state machine I/O
 pub trait Left {
+    /// Is Left in blocked?
+    fn left_in_blocked(&self) -> bool;
+    /// Set Left in blocked
+    fn set_left_in_blocked(&mut self, _: bool) -> ();
     /// Lengths of Input and Output of Left side
     fn left_lens(&self) -> (usize, usize);
     /// Set the Lengths of Input and Output of Left side
     fn left_set_lens(&mut self, _: usize, _: usize) -> ();
     /// Mutable Input and Output bufs of Left side
-    fn left_bufs_mut(&mut self) -> (&mut [u8], &mut [u8]);
+    fn left_bufs_mut<'d>(&'d mut self) -> (InBuffer<'d>, &'d mut [u8]);
+    /// Indicates whether the Left side is ready for Right side
+    fn is_ready(&self) -> bool;
+    /// Set the layer readiness for Right side input and output
+    fn set_ready(&mut self, _: bool) -> bool;
+    /// Indicates whether the Left side wants Input
+    fn left_want_read(&self) -> bool;
+    /// Set the Left side wanting to read
+    fn set_left_want_read(&mut self, _: bool) -> ();
+    /// Indicates whether the Left side wants Output
+    fn left_want_write(&self) -> bool;
+    /// Set the Left side wanting to write
+    fn set_left_want_write(&mut self, _: bool) -> ();
 }
 
 /// Use when Right side is not used
 pub struct NoRight;
 impl Right for NoRight {
     /// boiler
-    fn out_len(&self) -> usize {
+    fn right_lens(&self) -> (usize, usize) {
         unreachable!()
     }
     /// boiler
@@ -63,7 +111,7 @@ impl Right for NoRight {
 /// Right side of state machine I/O
 pub trait Right {
     /// Output length of Right side
-    fn out_len(&self) -> usize;
+    fn right_lens(&self) -> (usize, usize);
     /// Indicate processing of Output of Right side
     fn buf_right_out(&self) -> &[u8];
     /// Indicate whether Right side wants next input block

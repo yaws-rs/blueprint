@@ -10,7 +10,7 @@
 
 use blueprint::BluePrint;
 use blueprint::Orbit;
-use blueprint::{Left, Right};
+use blueprint::{Left, Right, InBuffer};
 
 /// Position in Tick Tocking
 pub struct Position;
@@ -27,7 +27,10 @@ pub enum Error {
 /// boiler
 pub struct TickTock;
 /// boiler
-pub struct TickTocking;
+#[derive(Default)]
+pub struct TickTocking {
+    initiated: bool,
+}
 
 impl Orbit for TickTocking {
     type Position = Position;
@@ -39,10 +42,20 @@ impl Orbit for TickTocking {
         _r: &mut R,
     ) -> Result<Self::Position, Self::Error> {
         let (left_in_len, left_out_len) = l.left_lens();
-        let (left_in_b, left_out_b) = l.left_bufs_mut();
+        let (left_inputs, left_out_b) = l.left_bufs_mut();
 
-        if left_in_len < 4 {
-            return Err(Error::ExhaustedLeftInput);
+        let left_in_b = match left_inputs {
+            InBuffer::Single(buf) => buf,
+            InBuffer::Double(buf1, buf2) => {
+                todo!()
+            },
+        };
+        
+        if !self.initiated && left_in_len == 0 {
+            left_out_b[0..4].copy_from_slice("TICK".as_bytes());
+            l.left_set_lens(0, 4);
+            self.initiated = true;
+            return Ok(Position);
         }
 
         let inputs = &mut left_in_b.chunks_exact_mut(4);
@@ -62,11 +75,6 @@ impl Orbit for TickTocking {
             in_discard += 4;
             out_added += 4;
 
-            /*
-            left_in_b[cur_pos..4].copy_from_slice(&[0u8; 4]);
-            left_out_b[cur_pos..4].copy_from_slice(out.as_bytes());
-            cur_pos += 4;
-             */
             cur_pos += 4;
         }
         let new_in_len = left_in_len - in_discard;
@@ -84,7 +92,7 @@ impl BluePrint<TickTocking> for TickTock {
     type Error = Error;
 
     fn with_defaults() -> Result<TickTocking, Self::Error> {
-        Ok(TickTocking {})
+        Ok(TickTocking::default())
     }
     fn with_configuration(_: Self::Config) -> Result<TickTocking, Self::Error> {
         todo!()
