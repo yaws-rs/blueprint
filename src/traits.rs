@@ -138,11 +138,11 @@ pub trait Portal {
 
 /// ..
 pub trait Orbit {
-    /// .
+    /// Current Position of the Orbit.
     type Position;
-    /// .
+    /// Error returned by the Orbit
     type Error;
-    /// Userdata, sides Left and Right
+    /// Advance given instantiated Orbit with Userdata, sides Left and Right.
     fn advance_with<B, L: Left, R: Right>(
         &mut self,
         _: &mut B,
@@ -151,14 +151,14 @@ pub trait Orbit {
     ) -> Result<Self::Position, Self::Error>;
 }
 
-/// .
+/// Constructor for Blueprint instantiating Orbit.
 pub trait BluePrint<O: Orbit> {
-    /// .
+    /// .Configuration passed to the instantiated Orbit
     type Config;
-    /// .
+    /// .Error used by Orbit
     type Error;
-    /// .
+    /// .Instantiate Orbit with defaults
     fn with_defaults() -> Result<O, Self::Error>;
-    /// .
+    /// .Instantiate Orbit with the given configuration
     fn with_configuration(_: Self::Config) -> Result<O, Self::Error>;
 }
