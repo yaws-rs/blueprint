@@ -14,7 +14,11 @@ categories = ["science"]
 
 [features]
 default = []
+#default = ["typed", "untyped"]
 std = []
+#typed = []
+#untyped = []
 
 [package.metadata.docs.rs]
 features = []
+#features = ["typed", "untyped"]

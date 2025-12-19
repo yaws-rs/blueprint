@@ -1,6 +1,6 @@
 [package]
 name = "blueprint-tick-tock"
-version = "0.0.1"
+version = "0.1.0"
 edition = "2021"
 description = "state machine / protocol blueprints tick-tock"
 homepage = "https://github.com/yaws-rs/blueprint"
@@ -11,7 +11,7 @@ repository = "https://github.com/yaws-rs/blueprint"
 categories = ["science"]
 
 [dependencies]
-blueprint = { path = "../", version = "0.0.1", default-features = false }
+blueprint = { path = "../", version = "0.1.0", default-features = false }
 
 [features]
 default = []

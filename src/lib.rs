@@ -21,5 +21,14 @@
 //-----------------------------------------------
 // Blueprint Traits
 //-----------------------------------------------
-mod traits;
-pub use traits::*;
+
+mod slice_bytes;
+#[doc(inline)]
+pub use slice_bytes::*;
+
+//WIP
+//#[cfg(feature = "typed")]
+//mod typed;
+//#[cfg(feature = "typed")]
+//#[doc(inline)]
+//pub use typed::*;

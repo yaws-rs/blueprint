@@ -9,11 +9,15 @@
 
 pub use blueprint::{Orbit, Left, Right, NoLeft, NoRight};
 
+/// All the known Orbits enum-dispatch
 pub enum Orbits {
+    /// Known Tls Orbit
     #[cfg(feature = "tls")]
     Tls(blueprint_tls::TlsContext),
+    /// Known TickTock Orbit
     #[cfg(feature = "tick-tock")]
     TickTock(blueprint_tick_tock::TickTocking),
+    /// Known H11Server Orbit
     #[cfg(feature = "h11server")]
     H11Server(blueprint_h11spec::H11Serving),
 }
@@ -24,10 +28,12 @@ impl core::fmt::Debug for Orbits {
     }
 }
 
+/// No harmonized position currently used
 #[derive(Debug)]
 pub struct NoPosition;
 
 // TODO: harmonise the error & Position
+/// No harmonized error currently used
 #[derive(Debug)]
 pub struct NoError;
 
@@ -43,6 +49,7 @@ impl Orbit for Orbits {
             Self::TickTock(t) => { t.advance_with(b, l, r); },
             #[cfg(feature = "h11server")]
             Self::H11Server(t) => { t.advance_with(b, l, r); },
+            _ => unreachable!(),
         };
         // TODO: harmonize the error & Position
         Ok(NoPosition)

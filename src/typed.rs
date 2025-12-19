@@ -1,8 +1,22 @@
-//! Blueprint traits
+//! Blueprint traits (Typed)
 
+#[cfg(test)]
+mod typed_test;
+
+// temp
+use crate::InBuffer;
+
+// As the name implies, used for dummy No-types.
+#[derive(Debug)]
+pub struct TypedNothingBurger;
+
+/*
 /// Use when Left side is not used
-pub struct NoLeft;
-impl Left for NoLeft {
+pub struct TypedNoLeft;
+impl TypedLeft<Tlin, Tlout> for TypedNoLeft {
+//    type CustomInType = TypedNothingBurger;
+//    type CustomOutType = TypedNothingBurger;
+
     /// boiler
     fn left_in_blocked(&self) -> bool {
         unreachable!()
@@ -16,9 +30,9 @@ impl Left for NoLeft {
     /// boiler
     fn left_set_lens(&mut self, _: usize, _: usize) -> () {
         unreachable!()
-    }
+    }    
     /// boiler
-    fn left_bufs_mut<'d>(&'d mut self) -> (InBuffer<'d>, &mut [u8]) {
+    fn left_typed_mut<'d>(&'d mut self) -> (&'d mut Self::CustomInType, &'d mut Self::CustomOutType) {
         unreachable!()
     }
     fn is_ready(&self) -> bool {
@@ -39,18 +53,14 @@ impl Left for NoLeft {
     fn set_left_want_write(&mut self, _: bool) -> () {
         unreachable!()
     }
+    fn shutdown(&mut self) -> () {
+        unreachable!()
+    }
 }
+*/
 
-/// Input Buffer
-pub enum InBuffer<'d> {
-    /// Single contiguous buffer
-    Single(&'d mut [u8]),
-    /// Two disjointed contiguous buffers
-    Double(&'d mut [u8], &'d mut [u8]),
-}
-
-/// Left side of state machine I/O
-pub trait Left {
+/// Typed Left side of state machine I/O
+pub trait TypedLeft<'d, T: ?Sized> {
     /// Is Left in blocked?
     fn left_in_blocked(&self) -> bool;
     /// Set Left in blocked
@@ -59,8 +69,10 @@ pub trait Left {
     fn left_lens(&self) -> (usize, usize);
     /// Set the Lengths of Input and Output of Left side
     fn left_set_lens(&mut self, _: usize, _: usize) -> ();
-    /// Mutable Input and Output bufs of Left side
-    fn left_bufs_mut<'d>(&'d mut self) -> (InBuffer<'d>, &'d mut [u8]);
+    /// Typed Left Meta
+    fn left_typed_meta(&'d mut self) -> &'d mut T;
+    /// Mutable Input and Output of Left side Custom In and Out Types
+    fn left_typed_mut(&'d mut self) -> (&'d mut T, &'d mut T);
     /// Indicates whether the Left side is ready for Right side
     fn is_ready(&self) -> bool;
     /// Set the layer readiness for Right side input and output
@@ -73,17 +85,25 @@ pub trait Left {
     fn left_want_write(&self) -> bool;
     /// Set the Left side wanting to write
     fn set_left_want_write(&mut self, _: bool) -> ();
+    /// State machine signals shutdown (e.g. peer signals close)
+    fn shutdown(&mut self) -> ();
 }
 
-/// Use when Right side is not used
-pub struct NoRight;
-impl Right for NoRight {
+/*
+/// Use when Right Typed side is not used
+pub struct TypedNoRight;
+impl TypedRight for TypedNoRight {
+    /// Custom Right Input type
+    type CustomInType = TypedNothingBurger;
+    /// Custom Right Output type
+    type CustomOutType = TypedNothingBurger;
+
     /// boiler
     fn right_lens(&self) -> (usize, usize) {
         unreachable!()
     }
     /// boiler
-    fn buf_right_out(&self) -> &[u8] {
+    fn typed_right_out(&self) -> &Self::CustomOutType {
         unreachable!()
     }
     /// boiler
@@ -99,21 +119,23 @@ impl Right for NoRight {
         unreachable!()
     }
     /// boiler
-    fn add_right_out(&mut self, _: &[u8]) -> () {
+    fn add_right_out(&mut self, _: &Self::CustomOutType) -> () {
         unreachable!()
     }
     /// boiler
-    fn add_right_in(&mut self, _: &[u8]) -> () {
+    fn add_right_in(&mut self, _: &Self::CustomInType) -> () {
         unreachable!()
     }
 }
+*/
 
-/// Right side of state machine I/O
-pub trait Right {
+/// Typed Right side of state machine I/O
+pub trait TypedRight<T: ?Sized> {
+
     /// Output length of Right side
     fn right_lens(&self) -> (usize, usize);
     /// Indicate processing of Output of Right side
-    fn buf_right_out(&self) -> &[u8];
+    fn typed_right_out(&self) -> &T;
     /// Indicate whether Right side wants next input block
     fn wants_right_next_in(&self) -> bool;
     /// SM: Indicate Right side to want the next block
@@ -122,43 +144,49 @@ pub trait Right {
     fn all_sent_right_out(&mut self) -> ();
     /// Add bytes to Right output
     // TODO: Fragmentation & Typification
-    fn add_right_out(&mut self, _: &[u8]) -> ();
+    fn add_right_out(&mut self, _: &T) -> ();
     /// Add bytes to Right input
     // TODO: Fragmentation & Typification
-    fn add_right_in(&mut self, _: &[u8]) -> ();
+    fn add_right_in(&mut self, _: &T) -> ();
 }
 
-/// Provide Portal between two Orbits Right and Left sides
-pub trait Portal {
+/*
+/// Provide Typed Portal between two Orbits Right and Left sides
+pub trait TypedPortal {
     /// Position custom type
     type Position;
-    /// Trade Right and Left sides
-    fn trade<R: Right, L: Left>(&mut self, _: R, _: L) -> Self::Position;
+    /// Typed Trade Right and Left sides
+    fn typed_trade<R: TypedRight, L: TypedLeft>(&mut self, _: R, _: L) -> Self::Position;
 }
+*/
 
-/// ..
-pub trait Orbit {
+/// Orbit (Typed)
+pub trait TypedOrbit<'d, 's: 'd, Tl: ?Sized, Tr: ?Sized> {
     /// Current Position of the Orbit.
     type Position;
     /// Error returned by the Orbit
     type Error;
     /// Advance given instantiated Orbit with Userdata, sides Left and Right.
-    fn advance_with<B, L: Left, R: Right>(
-        &mut self,
-        _: &mut B,
-        _: &mut L,
-        _: &mut R,
+    fn typed_advance_with<B, L: TypedLeft<'d, Tl>, R: TypedRight<Tr>>(
+        &'d mut self,
+        _: &'d mut B,
+        _: &'d mut L,
+        _: &'d mut R,
     ) -> Result<Self::Position, Self::Error>;
 }
 
-/// Constructor for Blueprint instantiating Orbit.
-pub trait BluePrint<O: Orbit> {
-    /// .Configuration passed to the instantiated Orbit
+/// Typed BluePrint
+pub trait TypedBluePrint<O: TypedOrbit<Tl, Tr>, Tl: ?Sized, Tr: ?Sized> {
+    /// Configuration passed to the instantiated Orbit
     type Config;
-    /// .Error used by Orbit
+    /// Error used by Orbit
     type Error;
-    /// .Instantiate Orbit with defaults
-    fn with_defaults() -> Result<O, Self::Error>;
-    /// .Instantiate Orbit with the given configuration
-    fn with_configuration(_: Self::Config) -> Result<O, Self::Error>;
+    // Typed Left for Orbit
+    //type TypedLeft;
+    // Typed Right for Orbit
+    //type TypedRight;
+    /// Instantiate typed Orbit with Defaults
+    fn typed_with_defaults() -> Result<O, Self::Error>;
+    /// Instantiate typed Orbit with the given Configuration
+    fn typed_with_configuration(_: Self::Config) -> Result<O, Self::Error>;    
 }
