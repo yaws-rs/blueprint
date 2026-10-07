@@ -9,11 +9,13 @@
 
 pub use blueprint::{Orbit, Left, Right, NoLeft, NoRight};
 
+use blueprint_ytls::{TlsServerCtxConfig, CryptoConfig, CryptoRng};
+
 /// All the known Orbits enum-dispatch
-pub enum Orbits {
+pub enum Orbits<Config, Crypto, Rng> {
     /// Known yTls Server Orbit
-    #[cfg(feature = "ytls-server")]
-    YtlsServer(blueprint_ytls::TlsServerOrbit),
+    //#[cfg(feature = "ytls-server")]
+    YtlsServer(blueprint_ytls::TlsServerOrbit<Config, Crypto, Rng>),
     /// Known Tls Orbit
     #[cfg(feature = "rustls")]
     Rustls(blueprint_rustls::TlsContext),
@@ -25,7 +27,7 @@ pub enum Orbits {
     H11Server(blueprint_h11spec::H11Serving),
 }
 
-impl core::fmt::Debug for Orbits {
+impl<Config, Crypto, Rng> core::fmt::Debug for Orbits<Config, Crypto, Rng> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> Result<(), core::fmt::Error> {
         write!(f, "Orbits::Something")
     }
@@ -40,9 +42,6 @@ pub struct NoPosition;
 #[derive(Debug)]
 pub struct NoError;
 
-#[cfg(feature = "ytls-server")]
-use blueprint_ytls::{TlsServerCtxConfig, CryptoConfig, CryptoRng};
-
 /*
 #[cfg(not(feature = "ytls-server"))]
 mod dummy {
@@ -53,7 +52,12 @@ mod dummy {
 #[cfg(not(feature = "ytls-server"))]
 use dummy::*; */
 
-impl Orbit for Orbits {
+impl<Config, Crypto, Rng> Orbit for Orbits<Config, Crypto, Rng>
+where
+    Config: TlsServerCtxConfig,
+    Crypto: CryptoConfig + Clone,
+    Rng: CryptoRng
+{
     type Position = NoPosition;
     type Error = NoError;
     #[inline]
