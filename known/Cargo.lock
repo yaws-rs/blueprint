@@ -91,10 +91,11 @@ checksum = "f41c3356dcfd6d77fe8a2c437079760cc44b1370b579dea360b5637eb995411f"
 
 [[package]]
 name = "blueprint-h11spec"
-version = "0.0.1"
+version = "0.0.4"
 dependencies = [
- "blueprint 0.2.0",
+ "blueprint 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "h11types",
+ "ychunked",
 ]
 
 [[package]]
@@ -131,7 +132,7 @@ dependencies = [
 name = "blueprints-known"
 version = "0.2.0"
 dependencies = [
- "blueprint 0.2.0",
+ "blueprint 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "blueprint-h11spec",
  "blueprint-rustls",
  "blueprint-tick-tock",
@@ -502,7 +503,7 @@ dependencies = [
 
 [[package]]
 name = "h11types"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "logos 0.16.1",
  "yuri",
@@ -1317,6 +1318,15 @@ checksum = "c7e468321c81fb07fa7f4c636c3972b9100f0346e5b6a9f2bd0603a52f7ed277"
 dependencies = [
  "curve25519-dalek",
  "rand_core 0.6.4",
+]
+
+[[package]]
+name = "ychunked"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "99d22633ccd34eaad6988d39e667997e2b35a58fbe05acb08aa000bf5696f064"
+dependencies = [
+ "logos 0.16.1",
 ]
 
 [[package]]

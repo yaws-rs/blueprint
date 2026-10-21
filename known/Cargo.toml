@@ -18,7 +18,7 @@ blueprint-tick-tock = { optional = true, path = "../../blueprint/tick-tock", def
 blueprint-h11spec = { optional = true, path = "../../h11spec/blueprint", default-features = false }
 
 [features]
-default = []
+default = ["h11server", "ytls-server"]
 h11server = ["dep:blueprint-h11spec", "blueprint-h11spec/h11server"]
 ytls-server = ["dep:blueprint-ytls", "blueprint-ytls/server"]
 rustls = ["dep:blueprint-rustls"]
