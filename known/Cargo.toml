@@ -1,6 +1,6 @@
 [package]
 name = "blueprints-known"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "Known machine / protocol blueprints"
 homepage = "https://github.com/yaws-rs/blueprint"
