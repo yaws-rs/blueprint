@@ -82,10 +82,6 @@ dependencies = [
 [[package]]
 name = "blueprint"
 version = "0.2.0"
-
-[[package]]
-name = "blueprint"
-version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f41c3356dcfd6d77fe8a2c437079760cc44b1370b579dea360b5637eb995411f"
 
@@ -93,7 +89,7 @@ checksum = "f41c3356dcfd6d77fe8a2c437079760cc44b1370b579dea360b5637eb995411f"
 name = "blueprint-h11spec"
 version = "0.0.4"
 dependencies = [
- "blueprint 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "blueprint",
  "h11types",
  "ychunked",
 ]
@@ -102,7 +98,7 @@ dependencies = [
 name = "blueprint-rustls"
 version = "0.0.1"
 dependencies = [
- "blueprint 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "blueprint",
  "pem-rfc7468 0.7.0",
  "pkcs8 0.11.0",
  "rustls",
@@ -112,17 +108,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "blueprint-tick-tock"
-version = "0.1.0"
-dependencies = [
- "blueprint 0.2.0",
-]
-
-[[package]]
 name = "blueprint-ytls"
 version = "0.0.1"
 dependencies = [
- "blueprint 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "blueprint",
  "ytls-server",
  "ytls-traits",
  "ytls-typed",
@@ -132,10 +121,9 @@ dependencies = [
 name = "blueprints-known"
 version = "0.2.0"
 dependencies = [
- "blueprint 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "blueprint",
  "blueprint-h11spec",
  "blueprint-rustls",
- "blueprint-tick-tock",
  "blueprint-ytls",
 ]
 

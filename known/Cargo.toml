@@ -14,15 +14,15 @@ categories = ["science"]
 blueprint = { version = "0.2.0", default-features = false }
 blueprint-ytls = { optional = true, path = "../../tls/ytls-blueprint", version = "0.0.1", default-features = false }
 blueprint-rustls = { optional = true, path = "../../tls/rustls-blueprint", version = "0.0.1", default-features = false }
-blueprint-tick-tock = { optional = true, path = "../../blueprint/tick-tock", default-features = false }
-blueprint-h11spec = { optional = true, path = "../../h11spec/blueprint", default-features = false }
+#blueprint-tick-tock = { optional = true, path = "../../blueprint/tick-tock", default-features = false }
+blueprint-h11spec = { optional = true, path = "../../h11spec/blueprint", version = "0.0.4", default-features = false }
 
 [features]
 default = ["h11server", "ytls-server"]
 h11server = ["dep:blueprint-h11spec", "blueprint-h11spec/h11server"]
 ytls-server = ["dep:blueprint-ytls", "blueprint-ytls/server"]
 rustls = ["dep:blueprint-rustls"]
-tick-tock = ["dep:blueprint-tick-tock"]
+#tick-tock = ["dep:blueprint-tick-tock"]
 std = ["blueprint-rustls?/std", "blueprint-h11spec?/std"]
 
 [package.metadata.docs.rs]
