@@ -1,6 +1,6 @@
 [package]
 name = "blueprints-known"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 description = "Known machine / protocol blueprints"
 homepage = "https://github.com/yaws-rs/blueprint"
@@ -15,7 +15,7 @@ blueprint = { version = "0.2.0", default-features = false }
 blueprint-ytls = { optional = true, path = "../../tls/ytls-blueprint", version = "0.0.1", default-features = false }
 blueprint-rustls = { optional = true, path = "../../tls/rustls-blueprint", version = "0.0.1", default-features = false }
 #blueprint-tick-tock = { optional = true, path = "../../blueprint/tick-tock", default-features = false }
-blueprint-h11spec = { optional = true, path = "../../h11spec/blueprint", version = "0.0.4", default-features = false }
+blueprint-h11spec = { optional = true, path = "../../h11spec/blueprint", version = "0.0.5", default-features = false }
 
 [features]
 default = ["h11server", "ytls-server"]

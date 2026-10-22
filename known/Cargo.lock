@@ -87,7 +87,7 @@ checksum = "f41c3356dcfd6d77fe8a2c437079760cc44b1370b579dea360b5637eb995411f"
 
 [[package]]
 name = "blueprint-h11spec"
-version = "0.0.4"
+version = "0.0.5"
 dependencies = [
  "blueprint",
  "h11types",
@@ -119,7 +119,7 @@ dependencies = [
 
 [[package]]
 name = "blueprints-known"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "blueprint",
  "blueprint-h11spec",
@@ -491,7 +491,7 @@ dependencies = [
 
 [[package]]
 name = "h11types"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = [
  "logos 0.16.1",
  "yuri",
